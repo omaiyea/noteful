@@ -26,6 +26,6 @@ export default class SidebarNoteDetails extends React.Component{
 }
 
 SidebarNoteDetails.propTypes = {
-    folderId: PropTypes.string.isRequired,
+    folderId: PropTypes.number.isRequired,
     folders: PropTypes.array.isRequired
 };
