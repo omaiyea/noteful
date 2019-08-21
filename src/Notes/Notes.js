@@ -8,8 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import './Notes.css';
 
-import config from '../config.js';
-
 export default class Notes extends React.Component{
     constructor(props){
         super(props);
@@ -19,20 +17,8 @@ export default class Notes extends React.Component{
 
     deleteNote(e){
         const noteId = e.target.id;
-
-        fetch(config.NOTE_ENDPOINT + `/${noteId}`, {
-            method: 'DELETE'
-        })
-        .then(res => {
-            if (!res.ok){
-                console.log(res.ok);
-            }
-
-            let remainingNotes = this.props.notes;
-            remainingNotes = this.props.notes.filter(note => note.id !== noteId)
-            this.props.deleteHandler(remainingNotes);
-    })
-        .catch(error => console.error(error))
+        let remainingNotes = this.props.notes.filter(note => note.id != noteId)
+        this.props.deleteHandler(remainingNotes);
     }
 
     handleAddClick(){

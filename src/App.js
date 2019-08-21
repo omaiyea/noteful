@@ -12,7 +12,7 @@ import NoteDisplayError from './NoteDisplayError/NoteDisplayError';
 import FolderDisplayError from './FolderDisplayError/FolderDisplayError';
 
 import './App.css';
-import config from './config';
+import STORE from './config';
 
 class App extends React.Component {
   constructor(props){
@@ -20,11 +20,13 @@ class App extends React.Component {
     this.state = {
       selectedFolder: '',
       selectedNote: '',
-      allFolders: [],
-      allNotes: [],
+      allFolders: STORE.folders,
+      allNotes: STORE.notes,
       error: '',
       showAddFolder: false,
       showAddNote: false,
+      curFolder: 3, //hardcoded, future: make dynamic
+      curNote: 14,
     }
   }
 
@@ -66,31 +68,17 @@ class App extends React.Component {
     })
   }
 
-  componentDidMount() {
-    this.fetchData();
+  setCurFolder(count){
+    this.setState({
+      curFolder: count
+    })
   }
 
-  fetchData(){
-    Promise.all([
-        fetch(`${config.NOTE_ENDPOINT}`),
-        fetch(`${config.FOLDER_ENDPOINT}`)
-    ])
-        .then(([notesRes, foldersRes]) => {
-            if (!notesRes.ok)
-                return notesRes.json().then(e => Promise.reject(e));
-            if (!foldersRes.ok)
-                return foldersRes.json().then(e => Promise.reject(e));
-
-            return Promise.all([notesRes.json(), foldersRes.json()]);
-        })
-        .then(([notes, folders]) => {
-            this.setNotes(notes);
-            this.setFolders(folders);
-        })
-        .catch(error => {
-            this.setError(error);
-        });
-    }
+  setCurNote(count){
+    this.setState({
+      curNote: count
+    })
+  }
 
   render(){
     return (
@@ -103,6 +91,8 @@ class App extends React.Component {
                   folders={this.state.allFolders} 
                   folderClickHandler={selected => this.setSelected(selected)}
                   addClickHandler={() => this.setFolderAdd()}
+                  addFolderId={(num) => this.setCurFolder(num)}
+                  folderId={this.state.curFolder}
                 />} 
         />
         <Route path ="/folder" 

@@ -1,7 +1,5 @@
 import React from 'react';
 
-import config from '../../config';
-
 import '../Add.css';
 
 export default class AddFolder extends React.Component{
@@ -17,17 +15,10 @@ export default class AddFolder extends React.Component{
     /* posts the folder to the endpoint if there's a valid name*/
     handleSubmit(e){
         e.preventDefault();
-        console.log(e);
 
         const userFolder = this.state.newFolder;
-
-        fetch(config.FOLDER_ENDPOINT, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({name:userFolder}),
-       })
-        .then(() => this.handleAddFolder())
-        .catch(error => console.log(error));
+        const updatedFolders = this.props.folders.append(userFolders);
+        console.log(updatedFolders);
     }
 
     /*make sure user has entered value for folder before submitting */
